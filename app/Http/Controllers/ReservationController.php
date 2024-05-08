@@ -11,78 +11,95 @@ use App\Http\Resources\reservation as ReservationResource;
 
 class ReservationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    use Traits\ValidatesData ;
+ 
 
     public function index()
     {
-        return response(["THE Reservations"=>ReservationResource::collection(reservation::all())])
-        ->setStatusCode(200,'Reservations returned successfully');
+            // Return a JSON response containing the reservations along with a success message
+        return response()->json(["THE Reservations"=>ReservationResource::collection(reservation::all()),
+          'message' => 'Reservations returned successfully'],200);
     }
-
 
 
     public function store(StoreReservationRequest $request)
-    {
-        $validatedData = $this->validateData($request);
 
-        if(reservation:: where([
-            ['Date', '=', $validatedData['hall_id']],
+      {
+        // Validate incoming request data
+        $validatedData = $request->validated();
+    
+        // Check if there is any existing reservation with the same hall, date, and time
+        if (Reservation::where([
+            ['hall_id', '=', $validatedData['hall_id']],
             ['Date', '=', $validatedData['Date']],
             ['time_id', '=', $validatedData['time_id']],
-        ])
-        ->first()){
-            return response(['message' => 'invalid date , You should select another time']);
+        ])->first()) {
+            // Return a response indicating invalid date selection
+            return response(['message' => 'Invalid date. Please select another time.']);
         }
-
-       $validatedData['user_id'] = auth()->id();
-        $reservation = new ReservationResource(reservation::create($validatedData));
-
-        $dishIds= $request->input('ids');
-
+    
+        // Assign the user ID of the authenticated user to the reservation
+        $validatedData['user_id'] = auth()->id();
+    
+        // Create a new reservation instance and save it to the database
+        $reservation = new ReservationResource(Reservation::create($validatedData));
+    
+        // Retrieve dish IDs from the request
+        $dishIds = $request->input('ids');
+    
+        // Attach each dish to the reservation
         foreach ($dishIds as $dishId) {
-        $reservation->dishes()->attach($dishId);
+          
+            $reservation->dishes()->attach($dishId);
         }
-        return response(["THE Reservation"=> $reservation])->setStatusCode(200,'Reservation created successfully');
-    }
+    
+        // Return a JSON response indicating successful reservation creation
+        return response()->json(["The Reservation" => $reservation, 'message' => 'Reservation created successfully']);
+      }
 
 
     public function show( $id)
     {
-        return response(["THE Reservation"=>new ReservationResource(reservation::findorFail($id))])
-        ->setStatusCode(200,'Reservation returned successfully');
+        // Return a JSON response with selected reservation  and status code
+        return response()->json(["THE Reservation"=>new ReservationResource(reservation::findorFail($id))
+        ,'message' => 'Reservation returned successfully'],200);
     }
 
  
     public function update(UpdateReservationRequest $request,  $id)
     {
-        
+         // Validate incoming request data
+        $validatedData = $request->validated();
+
+         // Find the reservation by its ID or throw an exception
         $reservation =  Reservation::findorFail($id);
-        $reservation->update($this->validateData($request));
-         return response(['reservation'=> $reservation])
-         ->setStatusCode(200,'reservation Updated successfully');
+
+         // Authorize the update action
+        $this->authorize('update',$reservation);
+
+        // Assign the authenticated user's ID to the reservation
+        $validatedData['user_id'] = auth()->id();
+
+        // Update the reservation with the validated data
+          $reservation->update($validatedData);
+
+       // Return a JSON response with the updated reservation and status code
+       return response()->json(['reservation'=> new ReservationResource($reservation),'message' => 'Reservations updated successfully'],200);
     }
 
     public function destroy( $id)
     {
+     // Return a JSON response with delete reservation message and status code
        Reservation::findOrFail($id)->delete();    
-       return response(['message' => 'reservation deleted'])
-       ->setStatusCode(200,'reservation deleted successfully');
+       return response()->json(['message' => 'reservation deleted'],200);
+       
     }
     
-    public function ShowUserReservation(Request $request)
+    public function ShowUserReservation()
     {
-        // if (!auth()->check()) {
-        //     return response()->json(['error' => 'Unauthenticated'], 401);
-        // }
-
-       return response(['reservations' =>
-       ReservationResource::collection(Reservation::where('user_id', auth()->user()->id)->get())])
-       ->setStatusCode(200, 'Reservations returned successfully');
+        // Return a JSON response with user's reservations and status code
+       return response()->json(['reservations'=> 
+       ReservationResource::collection(Reservation::where('user_id', auth()->user()->id)->get())]
+         ,200);
     }
     
 

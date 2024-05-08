@@ -14,28 +14,34 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
-    use Traits\ValidatesData ;
 
    
-    public function login(LoginRequest $request){
-       
+    public function login(LoginRequest $request)
+{
+    // Validate incoming request data
+    $validatedData = $request->validated();
+    
+    // Check if a user exists with the provided email
+    $user = User::where('email', $validatedData['email'])->first();
 
-        $validatedData =$this->validateData($request);
-        
-        $user=User::where('email',$validatedData['email'])->first();
-        //user check
-        if($user) {
-             //password check
-            if(Hash::check($validatedData['password'],$user->password))
-            {return response(['Token'=>$user->createToken('Access Token')->accessToken,
-                              'User'=> $user
-                              ] , 200);
-                            }else{
-                                return response(['password'=> 'password mismatch'],422);
-                            }
-                        }else{
-                            return response(['message' => 'user not found'] , 422);
-                        }
-                    }     
+    // If user exists, proceed with password check
+    if ($user) {
+        // Verify the password
+        if (Hash::check($validatedData['password'], $user->password)) {
+            // If password matches, generate and return access token along with user data
+            return response()->json([
+                'Token' => $user->createToken('Access Token')->accessToken,
+                'User' => $user
+            ], 200);
+        } else {
+            // If password doesn't match, return response indicating password mismatch
+            return response()->json(['password' => 'Password mismatch'], 422);
+        }
+    } else {
+        // If user not found, return response indicating user not found
+        return response()->json(['message' => 'User not found'], 422);
+    }
+}
+
 }
 

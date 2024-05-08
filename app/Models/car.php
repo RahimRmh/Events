@@ -14,8 +14,12 @@ class car extends Model
         'office_id',
         
     ];
+
     public function halls(){
         return $this->belongsToMany(hall::class);
+    }
+    public function reservations(){
+        return $this->hasMany(Reservation::class);
     }
     public function office(){
         return $this->belongsTo(office::class);

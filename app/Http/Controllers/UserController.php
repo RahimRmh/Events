@@ -10,8 +10,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return response(['user'=> User::all()])
-        ->setStatusCode(200,'Users returned successfully');
+        return response()->json(['user'=> User::all()],200);
     }
 
 }

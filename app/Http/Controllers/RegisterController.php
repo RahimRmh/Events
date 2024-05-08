@@ -13,27 +13,29 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 class RegisterController extends Controller
 {
-    use Traits\ValidatesData;
 
     public function register(StoreuserRequest $request)
     {
+        // Validate incoming request data
+        $validatedData = $request->validated();
     
-       $validatedData = $this->validateData($request);
-    
-
+        // Create a new user in the database
         $user = User::create([
-        'name' => $validatedData['name'],
-        'email' => $validatedData['email'],
-        'password' => Hash::make($validatedData['password']),
-        'phone_number' => $validatedData['phone_number']
-       ]);
-        
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'phone_number' => $validatedData['phone_number']
+        ]);
+    
+        // Create an access token for the user
         $accessToken = $user->createToken('Access Token')->accessToken;
-        
+    
+        // Return a JSON response with the user data and access token
         return response()->json([
             'user' => $user,
-            'access_token' => $accessToken
-        ]);
+            'access_token' => $accessToken,
+            'message' => 'User registered successfully' // Add a message to indicate successful registration
+        ], 200);
     }
     
 }

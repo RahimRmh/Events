@@ -34,7 +34,6 @@ Route::resource('dish',DishController::class);
 Route::resource('reservations',ReservationController::class);
 Route::resource('cars',CarController::class);
 Route::get('HallsAccordingToCategory',[HallController::class,'ClassifiedHalls']);
-Route::get('DishesAccordingToCategory',[DishController::class,'DishAccordingToHalls']);
 Route::post('halls/{hallId}/dishes/{dishId}', [HallDishController::class,'store']);
 Route::get('halls/{hallId}/dishes', [DishController::class,'DishAccordingToHalls']);
 Route::post('halls/{hallId}/cars/{carId}', [HallCarController::class,'store']);

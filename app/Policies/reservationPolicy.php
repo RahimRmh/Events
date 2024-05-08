@@ -3,12 +3,12 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\hall;
+use App\Models\reservation;
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-class HallPolicy
+class reservationPolicy
 {
     use HandlesAuthorization;
 
@@ -27,10 +27,10 @@ class HallPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\hall  $hall
+     * @param  \App\Models\reservation  $reservation
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, hall $hall)
+    public function view(User $user, reservation $reservation)
     {
         //
     }
@@ -43,45 +43,40 @@ class HallPolicy
      */
     public function create(User $user)
     {
-        return $user->role === 'admin' ? 
-        Response::allow() :
-        Response::deny('you dont have permission to add hall');
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\hall  $hall
+     * @param  \App\Models\reservation  $reservation
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user)
-    {  return $user->role === 'admin' ? 
+    public function update(User $user, reservation $reservation)
+    {
+        return $user->id === $reservation->user_id || $user->role === 'admin' ?
         Response::allow() :
-        Response::deny('you dont have permission to update hall');
-        
+         Response::deny('You dont have permission to update');
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\hall  $hall
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, hall $hall)
+    public function delete(User $user, reservation $reservation)
     {
-        //
+        return $user->id === $reservation->user_id || $user->role === 'admin' ?
+        Response::allow() :
+         Response::deny('You dont have permission');
     }
-
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\hall  $hall
+     * @param  \App\Models\reservation  $reservation
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, hall $hall)
+    public function restore(User $user, reservation $reservation)
     {
         //
     }
@@ -90,10 +85,10 @@ class HallPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\hall  $hall
+     * @param  \App\Models\reservation  $reservation
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, hall $hall)
+    public function forceDelete(User $user, reservation $reservation)
     {
         //
     }

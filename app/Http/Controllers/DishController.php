@@ -9,24 +9,34 @@ use Illuminate\Http\Request;
 
 class DishController extends Controller
 { 
-    use Traits\ValidatesData;
   
     public function index()
-    {
-        return response(["dishes"=> dish::all()])
-        ->setStatusCode(200,'dishes returned successfully');
-    }
+       {    // Return a JSON response containing the dishes and a success message
+        return response()->json(["dishes"=> dish::all(),
+         'message' => 'dishes returned successfully'],200); 
+       }
+       
+     public function store(DishRequest $request)
+      { 
+                // Return a JSON response with the created dish and a success message
+            return response()->json(["THE Dish"=>  dish::create($request->validated()),
+             'message' => 'dishes created successfully'],200);
+        }
 
-    public function store(DishRequest $request)
-    { 
-        return response(["THE Dish"=>  dish::create($this->validateData($request))])
-        ->setStatusCode(200,'dish created successfully');
-    }
 
-    public function DishAccordingToHalls($hallId)
+
+
+        public function DishAccordingToHalls($hallId)
     {
-        return response(["Dishes"=>hall::find($hallId)->dishes()->get()])
-        ->setStatusCode(200,'Dishes Returned successfully');
+        // Retrieve dinner dishes for the specified hall
+        $dishes = hall::find($hallId)->dishes()->where('type', 'dinner')->get();
+    
+        return response()->json([
+            "Dishes" => $dishes,
+            'message' => 'Dishes retrieved successfully',
+        ], 200);
     }
     
+    
 }
+    

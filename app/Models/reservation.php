@@ -30,6 +30,9 @@ class reservation extends Model
     public function time(){
         return $this->belongsTo(time::class);
     }
+    public function car(){
+        return $this->belongsTo(car::class);
+    }
     public function dishes(){
         return $this->belongsToMany(dish::class);
     }

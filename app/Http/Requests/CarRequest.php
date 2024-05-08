@@ -30,7 +30,6 @@ class CarRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'make' => 'nullable|string|max:255',
             'model' => 'required|string|max:255',
             'office_id' => 'required|exists:offices,id',
         ];
