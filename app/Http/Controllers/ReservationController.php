@@ -87,9 +87,15 @@ class ReservationController extends Controller
     }
 
     public function destroy( $id)
-    {
+    {      
+       // Find the reservation by its ID or throw an exception
+      $reservation =  Reservation::findorFail($id);
+      
+       // Authorize the delete action
+      $this->authorize('delete',$reservation);
+
+      $reservation->delete();    
      // Return a JSON response with delete reservation message and status code
-       Reservation::findOrFail($id)->delete();    
        return response()->json(['message' => 'reservation deleted'],200);
        
     }

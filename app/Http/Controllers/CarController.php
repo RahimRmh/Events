@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
-    use Traits\ValidatesData ;
+   
 
     public function index()
     {
@@ -20,7 +20,7 @@ class CarController extends Controller
 
     public function store(CarRequest $request)
     {     
-        return response(["car"=> Car::create($this->validateData($request))])
+        return response(["car"=> Car::create($request->validated())])
         ->setStatusCode(200,'car created successfully');   
     }
 

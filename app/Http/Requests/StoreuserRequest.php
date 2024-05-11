@@ -30,7 +30,7 @@ class StoreuserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> 'required|min:4|unique:users',
+            'name'=> 'required|min:4',
             'email'=> 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
             'phone_number' => ['required', 'string', 'regex:/^(\+)?(00)?(963)?9\d{8}$/', 'unique:users']
