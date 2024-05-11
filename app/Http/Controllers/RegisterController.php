@@ -18,14 +18,12 @@ class RegisterController extends Controller
     {
         // Validate incoming request data
         $validatedData = $request->validated();
-    
+
+       // Hash the password before saving it to the database for security
+        $validatedData['password'] = Hash::make($validatedData['password']);
+
         // Create a new user in the database
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
-            'phone_number' => $validatedData['phone_number']
-        ]);
+        $user = User::create($validatedData);
     
         // Create an access token for the user
         $accessToken = $user->createToken('Access Token')->accessToken;
