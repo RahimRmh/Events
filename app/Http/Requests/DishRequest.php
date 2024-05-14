@@ -32,6 +32,7 @@ class DishRequest extends FormRequest
             'type' => 'required|in:dinner,dessert',
             'price' => 'required|numeric|min:0',
             'hall_id' => 'exists:halls,id',
+            'hall_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
 
         ];
     }

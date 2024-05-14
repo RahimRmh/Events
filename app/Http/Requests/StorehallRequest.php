@@ -34,7 +34,6 @@ class StorehallRequest extends FormRequest
                 'price' => 'required|numeric|min:0.01',
                 'description' => 'nullable|string|max:1000',
                 'category' => 'required|in:Weddings,Sad occasions,Graduation parties,Birthdays',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Example rules for image validation
 
             
             

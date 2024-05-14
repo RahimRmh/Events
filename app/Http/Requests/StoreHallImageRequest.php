@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-class CarRequest extends FormRequest
+
+class StoreHallImageRequest extends FormRequest
 {
-    /**
+     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -30,9 +30,8 @@ class CarRequest extends FormRequest
     public function rules()
     {
         return [
-            'model' => 'required|string|max:255',
-            'office_id' => 'required|exists:offices,id',
-            'car_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'hall_id' => 'required|exists:halls,id',
+            'path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

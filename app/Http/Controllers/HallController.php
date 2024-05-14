@@ -13,43 +13,35 @@ use App\Http\Resources\hall as HallResource;
 
 class HallController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * 
-     */
+   
     public function index(Request $request)
     {
-        // Retrieve all halls
-        $halls = Hall::all();
-    
+       
         // Return the halls as a JSON response
         return response()->json([
-            "HALLS" => HallResource::collection($halls),
+            "HALLS" => HallResource::collection(Hall::all()),
             'message' => 'Halls returned successfully',
         ], 200);
     }
     
   
  
-     /**
-      * Store a newly created resource in storage.
-      */
+
      public function store(StorehallRequest $request)
-     {
-         $this->authorize('create', Hall::class);
+     {   
+         // Ensure the user is authorized to create a new Hall
+           $this->authorize('create', Hall::class);
 
+        // Validate the incoming request data
         $validatedData = $request->validated();
-
-        $image = $request->file('image')->store('images', 'public'); // Store the image in the 'public/images' directory
-        $validatedData['image'] = $image ;
-         return response()->json(["HALL"=> new HallResource(hall::create($validatedData)),
-         'message' => 'Hall created successfully'],200);
+          // Return a JSON response indicating successful Hall creation
+          return response()->json([
+            "HALL"=> new HallResource(hall::create($validatedData)),// Format the created Hall resource
+            'message' => 'Hall created successfully'
+         ],200);
      }
  
-     /**
-      * Display the specified resource.
-      */
+ 
      public function show( $id )
      {
         // Return a JSON response with the hall data and a success message
@@ -73,29 +65,23 @@ class HallController extends Controller
 }
 
  
-     /**
-      * Remove the specified resource from storage.
-      */
+     
      public function destroy( $id)
      {
-        //  $this->authorize('delete',resturant::class);
- 
-         Hall::findOrFail($id)->delete();    
-         return response(['message' => 'Hall deleted'])->
-         setStatusCode(200,'Hall deleted successfully');
+          // Delete the hall with the given ID from the database
+           Hall::findOrFail($id)->delete();
+
+           // Return a JSON response indicating that the hall has been deleted successfully
+           return response()->json(['message' => 'Hall deleted successfully'], 200);
      }
 
      
      public function ClassifiedHalls(CategoryRequest $request)
       { // Return a JSON response containing the filtered halls along with a success message 
-      return response()->json(["The Halls Where their category is $request->category"
-      =>HallResource::collection(hall::where('category',$request->category)->get()),
-       'message' => 'Halls Returned successfully'],200);
+      return response()->json([
+        "The Halls Where their category is $request->category"=>HallResource::collection(hall::where('category',$request->category)->get()),
+       ' message' => 'Halls Returned successfully'],200);
      }
- 
-
-                                      
-               
-                                      
+                              
  
      }

@@ -12,6 +12,7 @@ class dish extends Model
         'name',
         'type',
         'price',
+        'dish_image',
         
     ];
     public function halls(){

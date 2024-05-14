@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\hallimages as HallImagesResource;
+
 
 class hall extends JsonResource
 {
@@ -22,7 +24,7 @@ class hall extends JsonResource
             'Rental Cost' => $this->price,
             'Hall Description' => $this->description,
             'category' => $this->category,
-            'image' => $this->image,
+            'images' => HallImagesResource::collection($this->images)   ,
         ];
     }
 }
