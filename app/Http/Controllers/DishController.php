@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DishRequest;
+use App\Http\Requests\DishTypeRequest;
 use App\Models\dish;
 use App\Models\hall;
 use Illuminate\Http\Request;
+use App\Http\Resources\dishes as DishResource;
 
 class DishController extends Controller
 { 
-  
-    public function index()
-       {    // Return a JSON response containing the dishes and a success message
-        return response()->json(["dishes"=> dish::all(),
-         'message' => 'dishes returned successfully'],200); 
-       }
+
        
      public function store(DishRequest $request)
       { 
@@ -26,13 +23,27 @@ class DishController extends Controller
 
 
 
-        public function DishAccordingToHalls($hallId)
+        public function DishAccordingToHalls($hallId ,DishTypeRequest $request)
     {
-        // Retrieve dinner dishes for the specified hall
-        $dishes = hall::find($hallId)->dishes()->where('type', 'dinner')->get();
+        $validatedData = $request->validated();
+   
+        //    eager loading
     
+        $hall = Hall::with(['dishes' => function ($query) use($validatedData) {
+        $query->where('type', $validatedData['type'])->select('name','price','dish_image');
+   
+   
+          }])->find($hallId);
+
+
+    //without eager loading
+
+    // $hall=hall::find($hallId);
+
+    // $hall->dishes()->where('type','dinner')->select('name')->get();
+
         return response()->json([
-            "Dishes" => $dishes,
+            "Dishes" =>DishResource::collection($hall->dishes),
             'message' => 'Dishes retrieved successfully',
         ], 200);
     }

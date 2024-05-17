@@ -17,6 +17,7 @@ class CreateCarsTable extends Migration
             $table->id();
             $table->string('model');
             $table->foreignId('office_id')->references('id')->on('offices')->onDelete('cascade');
+            $table->string('car_image')->nullable();
             $table->decimal('price',10,2);
             $table->timestamps();
         });

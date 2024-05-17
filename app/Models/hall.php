@@ -19,6 +19,9 @@ class hall extends Model
     public function dishes(){
         return $this->belongsToMany(dish::class);
     }
+    public function singers(){
+        return $this->belongsToMany(Singer::class);
+    }
     public function images(){
         return $this->hasMany(HallImage::class);
     }

@@ -12,9 +12,8 @@ class reservation extends Model
         'hall_id',
         'time_id',
         'car_id',
-        
         'Date',
-        'Total_price',
+        'Total_Price',
         'status',
         'notes'
     ];

@@ -7,7 +7,7 @@ use App\Models\hall;
 use Illuminate\Http\Request;
 
 class HallDishController extends Controller
-{
+{   
 public function store($hallId, $dishId)
 {
     // Find the hall and dish by their IDs

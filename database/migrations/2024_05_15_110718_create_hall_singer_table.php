@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDishesTable extends Migration
+class CreateHallSingerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateDishesTable extends Migration
      */
     public function up()
     {
-        Schema::create('dishes', function (Blueprint $table) {
+        Schema::create('hall_singer', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('type', ['dinner', 'dessert','drinks']);
-            $table->string('dish_image')->nullable();
-            $table->decimal('price',10,2);
+            $table->foreignId('hall_id')->references('id')->on('halls')->onDelete('cascade');
+            $table->foreignId('singer_id')->references('id')->on('singers')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateDishesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dishes');
+        Schema::dropIfExists('hall_singer');
     }
 }

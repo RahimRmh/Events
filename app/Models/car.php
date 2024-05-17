@@ -11,6 +11,7 @@ class car extends Model
     protected $fillable = [
         'model',
         'car_image',
+        'price',
         'office_id',
         
     ];

@@ -29,10 +29,10 @@ class DishRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'type' => 'required|in:dinner,dessert',
+            'type' => 'required|in:dinner,dessert,drinks',
             'price' => 'required|numeric|min:0',
             'hall_id' => 'exists:halls,id',
-            'hall_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'hall_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
 
         ];
     }

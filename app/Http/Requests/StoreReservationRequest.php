@@ -29,7 +29,7 @@ class StoreReservationRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'user_id' => 'required|exists:users,id',
+            
             'hall_id' => 'required|exists:halls,id',
             'time_id' => 'required|exists:times,id',
             'Date'=>'required|date|after_or_equal:today',
