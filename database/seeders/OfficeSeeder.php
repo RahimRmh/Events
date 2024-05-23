@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\car;
-use App\Models\hall;
+use App\Models\office;
 use Illuminate\Database\Seeder;
 
-class HallSeeder extends Seeder
+class OfficeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +14,6 @@ class HallSeeder extends Seeder
      */
     public function run()
     {
-        hall::factory()->count(10000)->create();
+        office::factory()->count(200)->create();
     }
-}  
+}

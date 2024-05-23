@@ -33,14 +33,14 @@ class DishController extends Controller
         $query->where('type', $validatedData['type'])->select('name','price','dish_image');
    
    
-          }])->find($hallId);
+          }])->findOrFail($hallId);
 
 
-    //without eager loading
+    //with lazy loading
 
     // $hall=hall::find($hallId);
 
-    // $hall->dishes()->where('type','dinner')->select('name')->get();
+    // $dishes = $hall->dishes()->where('type','dinner')->select('name');
 
         return response()->json([
             "Dishes" =>DishResource::collection($hall->dishes),

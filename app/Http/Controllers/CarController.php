@@ -13,14 +13,7 @@ class CarController extends Controller
 {
    
 
-    public function index()
-    {
-        return response()->json([
-            "THE Cars"=> CarsResource::collection( car::all()),
-            "message" => 'cars returned successfully'
-        
-        ],200);
-    }
+  
 
 
     public function store(CarRequest $request)
@@ -38,10 +31,14 @@ class CarController extends Controller
   
     public function CarAccordingToHalls($hallId)
     {
-        return response()->json([
-            "Cars "=> new CarsResource(hall::find($hallId)->cars()->get()),
-             "message" => 'Cars Returned successfully'
-            ],200);
+        $hall = Hall::with(['cars' => function ($query) {
+            $query->select('cars.id','model', 'office_id', 'car_image', 'price')
+                  ->with('office:id,name'); // Eager load the office with selected columns
+        }])->findOrFail($hallId);     
+            return response()->json([
+                "Cars "=> CarsResource::collection($hall->cars) ,
+                 "message" => 'Cars Returned successfully'
+                ],200);
         
     }
     

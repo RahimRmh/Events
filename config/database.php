@@ -35,6 +35,7 @@ return [
 
     'connections' => [
 
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
@@ -90,6 +91,17 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+
+        'connections' => [
+            'database' => [
+                'driver' => 'database',
+                'table' => 'jobs',
+                'queue' => 'default',
+                'retry_after' => 90,
+            ],
+            
+        ],
+        
 
     ],
 

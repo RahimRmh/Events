@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class hall extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','capacity','location','price','category','description','image'];
+    protected $fillable = ['name','capacity','location','price','category','description','hall_image'];
     
     public function reservations(){
         return $this->hasMany(reservation::class);

@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\OfficeResource as officeResource;
+
 
 class Cars extends JsonResource
 {
@@ -16,14 +18,15 @@ class Cars extends JsonResource
     {
 
         return [
-
+            'id' => $this->id,
             'Car Name' => $this->model,
-            'Rental office' => $this->office->name,
             'Rental Price' => $this->price,
             'image' => $this->car_image,
+            'office' => new OfficeResource($this->whenLoaded('office')), // Ensure office is included
 
 
 
-    
+
+            
             ]   ; }
 }

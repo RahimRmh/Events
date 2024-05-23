@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\car;
-use App\Models\hall;
+use App\Models\HallImage;
 use Illuminate\Database\Seeder;
 
-class HallSeeder extends Seeder
+class HallImageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +14,6 @@ class HallSeeder extends Seeder
      */
     public function run()
     {
-        hall::factory()->count(10000)->create();
+        HallImage::factory()->count(3000)->create();    
     }
-}  
+}

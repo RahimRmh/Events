@@ -14,7 +14,13 @@ class HallFactory extends Factory
     public function definition()
     {
         return [
-            //
-        ];
+            'name' => $this->faker->word,
+            'capacity' => $this->faker->numberBetween(50, 500),
+            'location' => $this->faker->address,
+            'price' => $this->faker->numberBetween(1000, 5000),
+            'category' => $this->faker->randomElement(['Weddings','Sad occasions','Graduation parties','Birthdays']),
+            'description' => $this->faker->paragraph,
+            'hall_image' => $this->faker->imageUrl(),      
+          ];
     }
 }

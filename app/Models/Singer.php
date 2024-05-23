@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Singer extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
+    protected $fillable = ['name','price'];
 
     public function halls(){
        return $this->belongsToMany(Hall::class);

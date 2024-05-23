@@ -10,6 +10,7 @@ use App\Http\Requests\UpdatehallRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\hall as HallResource;
+use App\Http\Resources\HallsAccordingToCategory as HallCategoryResource;
 
 class HallController extends Controller
 {
@@ -17,11 +18,8 @@ class HallController extends Controller
     public function index(Request $request)
     {
        
-        // Return the halls as a JSON response
-        return response()->json([
-            "HALLS" => HallResource::collection(Hall::all()),
-            'message' => 'Halls returned successfully',
-        ], 200);
+        // Return the paginated halls 
+        return HallResource::collection(hall::paginate(5));
     }
     
   
@@ -45,7 +43,7 @@ class HallController extends Controller
      public function show( $id )
      {
         // Return a JSON response with the hall data and a success message
-         return response()->json(["THE HALL"=> Hall::findorFail($id)],200);
+         return response()->json(["THE HALL"=>new HallResource( Hall::findorFail($id))],200);
      }
  
 
@@ -78,9 +76,9 @@ class HallController extends Controller
      
      public function ClassifiedHalls(CategoryRequest $request)
       { // Return a JSON response containing the filtered halls along with a success message 
-      return response()->json([
-        "The Halls Where their category is $request->category"=>HallResource::collection(hall::where('category',$request->category)->get()),
-       ' message' => 'Halls Returned successfully'],200);
+      return HallCategoryResource::collection(hall::where('category',$request->category)->
+      select('id','name','hall_image')->paginate(10));
+     
      }
                               
  

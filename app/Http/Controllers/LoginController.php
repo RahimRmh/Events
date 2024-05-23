@@ -22,7 +22,7 @@ class LoginController extends Controller
     $validatedData = $request->validated();
     
     // Check if a user exists with the provided email
-    $user = User::where('email', $validatedData['email'])->first();
+    $user = User::where('email', $validatedData['email'])->where('verified',1)->select('id', 'name', 'email', 'phone_number', 'role','password')->first();
 
     // If user exists, proceed with password check
     if ($user) {
@@ -30,8 +30,8 @@ class LoginController extends Controller
         if (Hash::check($validatedData['password'], $user->password)) {
             // If password matches, generate and return access token along with user data
             return response()->json([
-                'Token' => $user->createToken('Access Token')->accessToken,
-                'User' => $user
+                'token' => $user->createToken('Access Token')->accessToken,
+                'user' => $user
             ], 200);
         } else {
             // If password doesn't match, return response indicating password mismatch

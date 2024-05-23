@@ -11,14 +11,7 @@ use App\Http\Resources\hallimages as HallImagesResource;
 class HallImageController extends Controller
 {
     
-    public function index()
-    {    
-        // Retrieve and format all hall images, then return them as a JSON response
-        return response()->json([
-            "images" => HallImagesResource::collection(HallImage::all()),
-            'message' => 'Images returned successfully',
-        ], 200);
-    }
+ 
 
  
     public function store(StoreHallImageRequest $request)

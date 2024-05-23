@@ -10,7 +10,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return response()->json(['user'=> User::all()],200);
+        return  User::paginate(20) ;
     }
 
 }

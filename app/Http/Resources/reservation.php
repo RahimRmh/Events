@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\dishes as DishesReservation;
+use App\Http\Resources\time as timeReservation;
+use App\Http\Resources\hall as hallReservation;
 
 
 class reservation extends JsonResource
@@ -17,14 +19,15 @@ class reservation extends JsonResource
     public function toArray($request)
     {
         return [
-            'User' => $this->user->name,
-            'Hall' =>$this->hall->name,
-            'Car' =>$this->car->model,
-            'Reservation Time' =>$this->time->date_1,
+            'id' =>$this->id,
+            'Hall Name' =>   $this->hall->name,
+            'Hall Id' =>   $this->hall->id,
+            'Car Name' =>$this->car->model,
+            'Car Id' =>$this->car->id,
+            'Reservation Time' => new timeReservation($this->time)  ,
             'Reservation Date' =>$this->Date,
             'Status Of Reservation ' => $this->status,
             'Total Price' => $this->Total_Price,
-            'notes' => $this->notes,
             'dishes' => DishesReservation::collection($this->dishes),
         ];
     }

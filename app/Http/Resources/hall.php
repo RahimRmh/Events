@@ -17,13 +17,14 @@ class hall extends JsonResource
     public function toArray($request)
     {
         return [
-
+             'id' =>$this->id,
             'Name Of Hall' => $this->name,
             'Capacity' => $this->capacity,
             'Hall Location' => $this->location,
             'Rental Cost' => $this->price,
             'Hall Description' => $this->description,
             'category' => $this->category,
+            'hall_image' => $this->hall_image,
             'images' => HallImagesResource::collection($this->images)   ,
         ];
     }

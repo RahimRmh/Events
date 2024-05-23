@@ -13,14 +13,6 @@ class ReservationController extends Controller
 {
  
 
-    public function index()
-    {
-            // Return a JSON response containing the reservations along with a success message
-        return response()->json(["THE Reservations"=>ReservationResource::collection(reservation::all()),
-          'message' => 'Reservations returned successfully'],200);
-    }
-
-
     public function store(StoreReservationRequest $request)
 
       {
@@ -103,12 +95,19 @@ class ReservationController extends Controller
     public function ShowUserReservation()
     {
         // Return a JSON response with user's reservations and status code
-       return response()->json(['reservations'=> 
-       ReservationResource::collection(Reservation::where('user_id', auth()->user()->id)->get())]
+       return response()->json([
+        'reservations'=> ReservationResource::collection(
+        Reservation::where('user_id', auth()->user()->id)
+        ->select('id','hall_id','time_id','status','Date','Total_Price','car_id')
+        ->with([
+          'dishes:id,name,dish_image',
+          'time:id,date_1',
+          'hall:id,name',
+          'car:id,model'
+      ])
+        ->get())]
          ,200);
     }
     
-
-
 
 }
