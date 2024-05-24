@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\hall as HallResource;
 use App\Http\Resources\HallsAccordingToCategory as HallCategoryResource;
+use App\Models\HallDetail;
 
 class HallController extends Controller
 {
@@ -76,8 +77,12 @@ class HallController extends Controller
      
      public function ClassifiedHalls(CategoryRequest $request)
       { // Return a JSON response containing the filtered halls along with a success message 
-      return HallCategoryResource::collection(hall::where('category',$request->category)->
-      select('id','name','hall_image')->paginate(10));
+
+    //   return HallCategoryResource::collection(hall::where('category',$request->category)->
+    //   select('id','name','hall_image')->paginate(10));
+
+  ///Or  with  Sql view 
+    // return HallDetail::where('category' , $request->category)->paginate(10);
      
      }
                               

@@ -19,6 +19,7 @@ use App\Http\Controllers\VerifyController;
 use App\Models\HallImage;
 use App\Models\reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +36,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function(){
     
+    Route::put('AcceptReservationNotification/{reservationId}' ,[AcceptReservationController::class,'AcceptReservation']);
     Route::resource('hall',HallController::class);
     Route::resource('singer',SingerController::class);
     Route::resource('users',UserController::class);
@@ -56,5 +58,6 @@ Route::resource('HallImages', HallImageController::class);
 Route::post('register',[RegisterController::class,'register']);
 Route::post('login',[LoginController::class,'Login'])->name('login');
 Route::post('verification',[VerifyController::class,'verify']);
-
-Route::put('AcceptReservationNotification/{reservationId}' ,[AcceptReservationController::class,'AcceptReservation']);
+Route::get('/test-channel-authorization/{userId}', function ($userId) {
+    return Broadcast::auth(request());
+});

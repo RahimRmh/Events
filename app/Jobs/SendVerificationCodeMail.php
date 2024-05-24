@@ -20,7 +20,7 @@ class SendVerificationCodeMail implements ShouldQueue
     protected $user;
 
     /**
-     * Create a new job instance.
+     * Create a new job instance
      *
      * @return void
      */

@@ -18,7 +18,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 
-Broadcast::channel('accept-reservation-notification.{userId}', function ($user, $userId) {
+ Broadcast::channel('channel-accept.{userId}', function ($user, $userId) {
     // Ensure only the user with the specified ID can listen on this channel
     return (int) $user->id === (int) $userId;
 });

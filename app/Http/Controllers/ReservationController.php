@@ -8,6 +8,7 @@ use App\Models\reservation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\reservation as ReservationResource;
+use App\Models\ReservationDetail;
 
 class ReservationController extends Controller
 {
@@ -94,20 +95,8 @@ class ReservationController extends Controller
     
     public function ShowUserReservation()
     {
-        // Return a JSON response with user's reservations and status code
-       return response()->json([
-        'reservations'=> ReservationResource::collection(
-        Reservation::where('user_id', auth()->user()->id)
-        ->select('id','hall_id','time_id','status','Date','Total_Price','car_id')
-        ->with([
-          'dishes:id,name,dish_image',
-          'time:id,date_1',
-          'hall:id,name',
-          'car:id,model'
-      ])
-        ->get())]
-         ,200);
-    }
+        // sql view here 
+    return ReservationDetail::where('user_id', auth()->user()->id)->get();
     
 
-}
+}}

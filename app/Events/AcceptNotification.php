@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ReservationAccepted implements ShouldBroadcast
+class AcceptNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,10 +20,10 @@ class ReservationAccepted implements ShouldBroadcast
      * @return void
      */
     public $reservation ;
-
+    
     public function __construct($reservation)
     {
-        $this->reservation = $reservation;
+        $this->reservation = $reservation ;
     }
 
     /**
@@ -33,15 +33,13 @@ class ReservationAccepted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('accept-reservation-notification.'.$this->reservation->user_id);
+        return new PrivateChannel('channel-accept.'.$this->reservation->user_id);
     }
 
     public function broadcastWith()
     {
         return [
-            'message' => 'Your reservation has been accepted.', // Message to be displayed in the notification
-            'reservation_id' => $this->reservation->id, 
-         
+            'message' => 'Your reservation has been accepted.',
+            'reservation_id' => $this->reservation->id,
         ];
-    }
-}
+    }}

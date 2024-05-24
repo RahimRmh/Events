@@ -31,7 +31,7 @@ class RegisterController extends Controller
         // Create a new user in the database
         $user = User::create($validatedData);
 
- 
+      //job 
         SendVerificationCodeMail::dispatch($user);
     
         // Create an access token for the user

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AcceptNotification;
 use Illuminate\Http\Request;
 use App\Models\reservation;
-use App\Events\ReservationAccepted;
+
 
 class AcceptReservationController extends Controller
 {
@@ -19,7 +20,8 @@ class AcceptReservationController extends Controller
     $reservation->save();
 
     // Trigger an event to notify that the reservation has been accepted
-    event(new ReservationAccepted($reservation));
+    event(new AcceptNotification($reservation));
+
 }
 
 
