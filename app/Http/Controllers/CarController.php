@@ -35,6 +35,7 @@ class CarController extends Controller
             $query->select('cars.id','model', 'office_id', 'car_image', 'price')
                   ->with('office:id,name'); // Eager load the office with selected columns
         }])->findOrFail($hallId);     
+        
             return response()->json([
                 "Cars "=> CarsResource::collection($hall->cars) ,
                  "message" => 'Cars Returned successfully'

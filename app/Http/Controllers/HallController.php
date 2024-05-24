@@ -81,8 +81,8 @@ class HallController extends Controller
     //   return HallCategoryResource::collection(hall::where('category',$request->category)->
     //   select('id','name','hall_image')->paginate(10));
 
-  ///Or  with  Sql view 
-    // return HallDetail::where('category' , $request->category)->paginate(10);
+//   /Or  with  Sql view 
+    return HallDetail::where('category' , $request->category)->paginate(10);
      
      }
                               
